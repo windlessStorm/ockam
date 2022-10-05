@@ -14,7 +14,7 @@ use colorful::Colorful;
 #[derive(Clone, Debug, Args)]
 pub struct CreateCommand {
     /// Name of the space.
-    #[arg(display_order = 1001, default_value_t = hex::encode(&random::<[u8;4]>()), hide_default_value = true)]
+    #[arg(display_order = 1001, default_value_t = hex::encode(&random::<[u8;4]>()), hide_default_value = true, validator = validate_space_name)]
     pub name: String,
 
     #[command(flatten)]
@@ -37,6 +37,16 @@ impl CreateCommand {
             "To learn more about production ready spaces in Ockam Orchestrator, contact us at: hello@ockam.io".light_magenta()
         );
         node_rpc(rpc, (options, self));
+    }
+}
+
+async fn validate_space_name(name: &str) -> Result<(), String> {
+    if name.trim().len() != name.len() {
+        Err(String::from(
+            "package name cannot have leading and trailing space",
+        ))
+    } else {
+        Ok(())
     }
 }
 
