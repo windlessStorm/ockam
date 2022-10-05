@@ -14,7 +14,8 @@ use colorful::Colorful;
 #[derive(Clone, Debug, Args)]
 pub struct CreateCommand {
     /// Name of the space.
-    #[arg(display_order = 1001, default_value_t = hex::encode(&random::<[u8;4]>()), hide_default_value = true, validator = validate_space_name)]
+    #[arg(display_order = 1001, default_value_t = hex::encode(&random::<[u8;4]>()), hide_default_value = true)]
+    #[clap(validator = validate_space_name)]
     pub name: String,
 
     #[command(flatten)]
